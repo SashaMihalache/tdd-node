@@ -1,29 +1,21 @@
 // models/ParkingSession.js
 
-// const { convertToUTC } = require("../helpers/time");
-
 class ParkingSession {
   constructor(start, end) {
-    this.startDate = new Date(start);
-    this.endDate = new Date(end);
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
     this.start = {
-      hour: this.startDate.getHours(),
-      minute: this.startDate.getMinutes(),
-      second: this.startDate.getSeconds(),
+      hour: startDate.getHours(),
+      minute: startDate.getMinutes(),
+      second: startDate.getSeconds(),
     };
 
     this.end = {
-      hour: this.endDate.getHours(),
-      minute: this.endDate.getMinutes(),
-      second: this.endDate.getSeconds(),
+      hour: endDate.getHours(),
+      minute: endDate.getMinutes(),
+      second: endDate.getSeconds(),
     };
-  }
-
-  calculateWholeDuration() {
-    return Math.round(
-      (this.endDate.getTime() - this.startDate.getTime()) / 1000
-    );
   }
 }
 

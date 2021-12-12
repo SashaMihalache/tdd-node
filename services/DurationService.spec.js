@@ -1,8 +1,9 @@
 // SessionDurationService.spec.js
 
 const SessionDurationService = require("./DurationService");
-const ParkingSession = require("../../models/ParkingSession");
-const Rack = require("../../models/Rack");
+
+const ParkingSession = require("../models/ParkingSession");
+const Rack = require("../models/Rack");
 
 describe("DurationService", () => {
   // dupa baga si asta cu before each (explica de setup and teardown)

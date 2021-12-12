@@ -1,6 +1,6 @@
 // SessionDurationService.js
-const ParkingSession = require("../../models/ParkingSession");
-const Rack = require("../../models/Rack");
+const ParkingSession = require("../models/ParkingSession");
+const Rack = require("../models/Rack");
 
 const isSessionInvalid = (session, rack) => {
   return (
@@ -37,11 +37,11 @@ const isRightOverlappingSession = (session, rack) => {
   );
 };
 
-const calculateClippedDuration = (
+const calculateClippedDuration = ({
   remainingHours,
   remainingMinutes,
-  remainingSeconds
-) => {
+  remainingSeconds,
+}) => {
   return remainingHours * 3600 + remainingMinutes * 60 + remainingSeconds;
 };
 
@@ -50,20 +50,24 @@ function SessionDurationService(session, rack) {
     return null;
 
   if (isLeftOverlappingSession(session, rack)) {
-    return calculateClippedDuration(
-      session.end.hour - rack.start.hour,
-      session.end.minute,
-      session.end.second
-    );
+    return calculateClippedDuration({
+      remainingHours: session.end.hour - rack.start.hour,
+      remainingMinutes: session.end.minute,
+      remainingSeconds: session.end.second,
+    });
   } else if (isRightOverlappingSession(session, rack)) {
-    return calculateClippedDuration(
-      rack.end.hour - session.start.hour - 1,
-      60 - session.start.minute - 1,
-      60 - session.start.second
-    );
+    return calculateClippedDuration({
+      remainingHours: rack.end.hour - session.start.hour - 1,
+      remainingMinutes: 60 - session.start.minute - 1,
+      remainingSeconds: 60 - session.start.second,
+    });
   }
 
-  return session.calculateWholeDuration();
+  return calculateClippedDuration({
+    remainingHours: session.end.hour - session.start.hour,
+    remainingMinutes: session.end.minute - session.start.minute,
+    remainingSeconds: session.end.second - session.start.second,
+  });
 }
 
 module.exports = SessionDurationService;
