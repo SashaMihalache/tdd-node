@@ -63,10 +63,7 @@ describe("DurationService", () => {
     expect(
       DurationService(
         new ParkingSession("2021-08-09 05:10:20", "2021-08-09 07:50:20"),
-        {
-          start: 8,
-          end: 18,
-        }
+        rack
       )
     ).toBeNull();
   });
@@ -75,10 +72,7 @@ describe("DurationService", () => {
     expect(
       DurationService(
         new ParkingSession("2021-08-09 18:00:00", "2021-08-09 18:50:20"),
-        {
-          start: 8,
-          end: 18,
-        }
+        rack
       )
     ).toBeNull();
   });
