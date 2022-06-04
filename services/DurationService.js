@@ -45,7 +45,7 @@ const calculateClippedDuration = ({
   return remainingHours * 3600 + remainingMinutes * 60 + remainingSeconds;
 };
 
-function SessionDurationService(session, rack) {
+function DurationService(session, rack) {
   if (isSessionInvalid(session, rack) || isSessionOutOfBounds(session, rack))
     return null;
 
@@ -70,4 +70,4 @@ function SessionDurationService(session, rack) {
   });
 }
 
-module.exports = SessionDurationService;
+module.exports = DurationService;

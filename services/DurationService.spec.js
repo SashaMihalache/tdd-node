@@ -1,6 +1,6 @@
-// SessionDurationService.spec.js
+// DurationService.spec.js
 
-const SessionDurationService = require("./DurationService");
+const DurationService = require("./DurationService");
 
 const ParkingSession = require("../models/ParkingSession");
 const Rack = require("../models/Rack");
@@ -18,29 +18,29 @@ describe("DurationService", () => {
     rack = null;
   });
 
-  it("should return null if no session is provided", () => {
+  it("Case 0  - should return null if no session is provided", () => {
     const session = new ParkingSession(
       "2021-08-09 08:10:20",
       "2021-08-09 08:50:20"
     );
 
-    expect(SessionDurationService(session, null)).toBeNull();
-    expect(SessionDurationService(null)).toBeNull();
+    expect(DurationService(session, null)).toBeNull();
+    expect(DurationService(null)).toBeNull();
   });
 
-  it("should return null if session or rack hours is not of correct object type", () => {
+  it("Case 0  - should return null if session or rack hours is not of correct object type", () => {
     const session = new ParkingSession(
       "2021-08-09 08:10:20",
       "2021-08-09 08:50:20"
     );
 
-    expect(SessionDurationService({ test: "a" })).toBeNull();
-    expect(SessionDurationService(session, { test: "test" })).toBeNull();
+    expect(DurationService({ test: "a" })).toBeNull();
+    expect(DurationService(session, { test: "test" })).toBeNull();
   });
 
-  it("Case 1 - should return null for sessions outside of rack hour interval on the left", () => {
+  it("Case 1  - should return null for sessions outside of rack hour interval on the left", () => {
     expect(
-      SessionDurationService(
+      DurationService(
         new ParkingSession("2021-08-09 05:10:20", "2021-08-09 07:50:20"),
         rack
       )
@@ -49,7 +49,7 @@ describe("DurationService", () => {
 
   it("Case 1' - should return null for sessions outside of rack hour interval on the left", () => {
     expect(
-      SessionDurationService(
+      DurationService(
         new ParkingSession("2021-08-09 07:50:00", "2021-08-09 08:00:00"),
         {
           start: 8,
@@ -59,9 +59,9 @@ describe("DurationService", () => {
     ).toBeNull();
   });
 
-  it("Case 2 - should return null for sessions outside of rack hour interval on the right", () => {
+  it("Case 2  - should return null for sessions outside of rack hour interval on the right", () => {
     expect(
-      SessionDurationService(
+      DurationService(
         new ParkingSession("2021-08-09 05:10:20", "2021-08-09 07:50:20"),
         {
           start: 8,
@@ -73,7 +73,7 @@ describe("DurationService", () => {
 
   it("Case 2' - should return null for sessions outside of rack hour interval on the right", () => {
     expect(
-      SessionDurationService(
+      DurationService(
         new ParkingSession("2021-08-09 18:00:00", "2021-08-09 18:50:20"),
         {
           start: 8,
@@ -83,7 +83,7 @@ describe("DurationService", () => {
     ).toBeNull();
   });
 
-  it("Case 3 - should return duration in seconds when a session is inside rack hour interval", () => {
+  it("Case 3  - should return duration in seconds when a session is inside rack hour interval", () => {
     // show with arrays
 
     const inputs = [
@@ -114,13 +114,13 @@ describe("DurationService", () => {
     ];
 
     inputs.forEach((i) => {
-      expect(SessionDurationService(i.session, i.rack)).toEqual(i.expected);
+      expect(DurationService(i.session, i.rack)).toEqual(i.expected);
     });
   });
 
   // SO FAR, pretty easy, right? you could've done this directly in your head
 
-  it("Case 4 - should split session and calculate only for interval inside rack hours for left overlapping session", () => {
+  it("Case 4  - should split session and calculate only for interval inside rack hours for left overlapping session", () => {
     const inputs = [
       {
         session: new ParkingSession(
@@ -141,11 +141,11 @@ describe("DurationService", () => {
     ];
 
     inputs.forEach((i) => {
-      expect(SessionDurationService(i.session, i.rack)).toEqual(i.expected);
+      expect(DurationService(i.session, i.rack)).toEqual(i.expected);
     });
   });
 
-  it("Case 5 - should split session and calculate only for interval inside rack hours for right overlapping session", () => {
+  it("Case 5  - should split session and calculate only for interval inside rack hours for right overlapping session", () => {
     const inputs = [
       {
         session: new ParkingSession(
@@ -174,12 +174,12 @@ describe("DurationService", () => {
     ];
 
     inputs.forEach((i) => {
-      expect(SessionDurationService(i.session, i.rack)).toEqual(i.expected);
+      expect(DurationService(i.session, i.rack)).toEqual(i.expected);
     });
   });
 
   // showcase even if you move rack hours
-  it("Case 6 - should work even if rack hours are different", () => {
+  it("Case 6  - should work even if rack hours are different", () => {
     const inputs = [
       {
         session: new ParkingSession(
@@ -200,9 +200,7 @@ describe("DurationService", () => {
     ];
 
     inputs.forEach((i) => {
-      expect(SessionDurationService(i.session, i.rack)).toEqual(i.expected);
+      expect(DurationService(i.session, i.rack)).toEqual(i.expected);
     });
   });
-
-  // and so on
 });
